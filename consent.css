@@ -1,0 +1,260 @@
+/*
+ * consent.css – additional styles for the consent form pages.
+ *
+ * These styles apply only to the multi‑step consent form and completion pages.
+ * They leverage CSS custom properties defined in the main site’s theme to
+ * ensure colours and fonts remain consistent across the Forever Kid LLP
+ * website. Adjust spacing and sizing as needed to match the look and feel
+ * of the existing site.
+ */
+
+/* Container styling */
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+  /* Soft pastel background similar to the hero section */
+  background-color: #fff9ec;
+  border-radius: 8px;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 2rem;
+  }
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* Form elements */
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+input[type='text'],
+input[type='tel'],
+input[type='date'] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid hsl(var(--input));
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary));
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+button:hover {
+  background-color: hsl(var(--primary) / 0.85);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error messages - updated styling */
+.error {
+  display: block;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.child-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #fee2e2;
+  border-left: 3px solid #dc2626;
+  border-radius: 4px;
+}
+
+/* Utility animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.child-group {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .child-group {
+    padding: 1.25rem;
+  }
+  
+  .child-header {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile friendly body background for the consent form pages */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Child group container - updated for modern card design with yellow theme */
+.child-group { 
+  padding: 1.5rem; 
+  border-radius: 12px; 
+  background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+  border: 2px solid #fde047;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
+  transition: all 0.3s ease;
+}
+
+.child-group:hover {
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25);
+  transform: translateY(-2px);
+}
+
+.child-header { 
+  font-weight: 700; 
+  font-size: 1.125rem;
+  color: #a16207;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.child-header::before {
+  content: "👶";
+  font-size: 1.5rem;
+}
+
+.child-group label { 
+  display: block; 
+  margin: 0.75rem 0 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.child-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #fde047;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.child-group input:focus {
+  outline: none;
+  border-color: #eab308;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
+}
+
+.child-group button {
+  margin-top: 1rem;
+  background: #ef4444;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+  border: 2px solid #991b1b;
+  color: white;
+}
+
+.child-group button:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+}
+
+/* Signature pad container - updated styling with yellow theme */
+.signature-pad-container {
+  position: relative;
+}
+
+#signatureCanvas {
+  display: block;
+  touch-action: none;
+  height: 200px;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      #fef9c3 0px,
+      #fef9c3 1px,
+      transparent 1px,
+      transparent 40px
+    );
+}
+
+@media (max-width: 640px) {
+  #signatureCanvas {
+    height: 150px;
+  }
+}
+
+/* Consent text container */
+.consent-text {
+  line-height: 1.8;
+  font-size: 0.9375rem;
+}
+
+.consent-text::-webkit-scrollbar {
+  width: 8px;
+}
+
+.consent-text::-webkit-scrollbar-track {
+  background: #fef9c3;
+  border-radius: 4px;
+}
+
+.consent-text::-webkit-scrollbar-thumb {
+  background: #fde047;
+  border-radius: 4px;
+}
+
+.consent-text::-webkit-scrollbar-thumb:hover {
+  background: #facc15;
+}
+
+/* Steps show/hide */
+.steps { display: none; }
+.steps.active { display: block; }
+
+/* Mobile friendly body background for the consent form pages */
+body {
+  background-color: #fff9ec;
+}

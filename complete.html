@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consent Complete – LePlay</title>
+    <meta
+      name="description"
+      content="Consent completion page for LePlay – Little Engineers Playground"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="consent.css" />
+    <!-- QR code library (global: QRCode) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+    <main class="container mx-auto px-4 py-12 max-w-4xl">
+      <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-yellow-200 text-center">
+        <div class="mb-8">
+          <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+            FOREVER KID <span class="text-xl md:text-2xl text-gray-600">LLP</span>
+          </h1>
+        </div>
+        <div class="flex justify-center mb-8">
+          <img src="/lovable-uploads/5afd6618-2169-4c2e-b901-efb0e8318771.png" alt="LePlay - Little Engineers Playground" class="h-20 w-auto object-contain" />
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-yellow-700 mb-4">Thank You!</h1>
+        <p class="text-xl text-gray-700 mb-4">Your consent form has been recorded successfully.</p>
+        <p class="text-lg text-gray-600 mb-8">Please present this QR code at the entrance for check-in.</p>
+        <div id="qrCodeContainer" class="mx-auto mb-6 p-6 bg-white border-4 border-yellow-400 rounded-xl shadow-lg inline-block"></div>
+        <p id="mobileDisplay" class="text-xl font-semibold text-gray-800"></p>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        // Read ?mobile= from the URL
+        const params = new URLSearchParams(location.search);
+        const mobile = params.get('mobile') || '';
+
+        // Show the mobile number
+        const mobileEl = document.getElementById('mobileDisplay');
+        if (mobile) mobileEl.textContent = `Mobile: ${mobile}`;
+
+        // Render the QR code
+        const holder = document.getElementById('qrCodeContainer');
+        if (!holder) return;
+
+        // Ensure the library is available
+        if (typeof QRCode === 'undefined' || typeof QRCode.toCanvas !== 'function') {
+          console.error('QRCode library did not load.');
+          holder.textContent = 'QR unavailable. Please show this screen to staff.';
+          return;
+        }
+
+        if (!mobile) {
+          holder.textContent = 'No mobile provided.';
+          return;
+        }
+
+        // Create a canvas, draw the QR into it, then append it
+        const canvas = document.createElement('canvas');
+        canvas.setAttribute('aria-label', 'Check-in QR code');
+        QRCode.toCanvas(
+          canvas,
+          mobile,
+          {
+            errorCorrectionLevel: 'M',
+            width: 220,
+            margin: 1,
+            color: { dark: '#000000', light: '#ffffff' }
+          },
+          function (err) {
+            if (err) {
+              console.error('QR generation error:', err);
+              holder.textContent = 'QR unavailable. Please show this screen to staff.';
+              return;
+            }
+            holder.innerHTML = '';
+            holder.appendChild(canvas);
+          }
+        );
+      })();
+    </script>
+  </body>
+</html>

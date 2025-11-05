@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consent Form – LePlay</title>
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Signature pad library -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <!-- Flatpickr date picker with Airbnb theme for a modern look -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    <!-- Additional styles for consent form -->
+    <link rel="stylesheet" href="consent.css" />
+  </head>
+  <body class="bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+    <main class="container mx-auto px-4 py-12 max-w-4xl">
+      <!-- Header with Logo -->
+      <div class="text-center mb-12">
+        <div class="mb-8">
+          <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+            FOREVER KID <span class="text-xl md:text-2xl text-gray-600">LLP</span>
+          </h1>
+          <h2 class="text-2xl md:text-3xl font-semibold text-yellow-600 mb-6">"Rooted in play, building futures."</h2>
+        </div>
+        
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow-700 mb-2">Digital Consent Form</h2>
+        <p class="text-lg text-gray-700">India's First Kids Construction & Engineering Themed Play Area</p>
+      </div>
+
+      <!-- Step 1: Enter Mobile Number -->
+      <div id="step1" class="steps active">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-yellow-200">
+          <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to LePlay</h2>
+          <p class="text-gray-700 mb-8 text-lg">Please enter your mobile number to continue.</p>
+          <form id="mobileForm" class="space-y-6">
+            <div>
+              <label for="mobileNumber" class="block text-sm font-semibold text-gray-700 mb-2">Mobile Number</label>
+              <input
+                type="tel"
+                id="mobileNumber"
+                required
+                pattern="[6-9][0-9]{9}"
+                inputmode="numeric"
+                maxlength="10"
+                placeholder="10‑digit mobile number"
+                class="w-full px-4 py-3 border-2 border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all text-lg"
+              />
+              <span id="mobileNumberError" class="error text-red-600 text-sm mt-2" style="display:none"></span>
+            </div>
+          </form>
+          <button id="nextToDetails" class="mt-8 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-4 px-8 rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border-2 border-black">Next</button>
+        </div>
+      </div>
+      <!-- Step 2: Parent and Children Details -->
+      <div id="step2" class="steps">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-yellow-200">
+          <h2 id="detailsHeading" class="text-3xl font-bold text-gray-800 mb-8">Your Details</h2>
+          <form id="detailsForm" class="space-y-6">
+            <!-- Parent name field will be shown if needed -->
+            <div id="parentNameSection" style="display:none;">
+              <label for="parentName" class="block text-sm font-semibold text-gray-700 mb-2">Parent/Guardian Name</label>
+              <input type="text" id="parentName" placeholder="Your full name" class="w-full px-4 py-3 border-2 border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all text-lg" />
+              <span id="parentNameError" class="error text-red-600 text-sm mt-2" style="display:none"></span>
+            </div>
+          </form>
+          <h3 class="text-2xl font-bold text-yellow-700 mt-8 mb-6">Children Details</h3>
+          <div id="childrenContainer" class="space-y-4 mb-6"></div>
+          <button id="addChild" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg transition-all shadow-md hover:shadow-lg border-2 border-black">+ Add Child</button>
+          <div class="flex gap-4 mt-8">
+            <button id="backToMobile" class="flex-1 bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all border-2 border-gray-400">Back</button>
+            <button id="nextToConsent" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-black">Next</button>
+          </div>
+        </div>
+      </div>
+      <!-- Step 3: Consent and Signature -->
+      <div id="step3" class="steps">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-yellow-200">
+          <h2 class="text-3xl font-bold text-gray-800 mb-6">Consent Agreement</h2>
+          <div id="consentText" class="consent-text bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-8 max-h-64 overflow-y-auto text-gray-800 leading-relaxed"></div>
+          <div class="signature-pad-container bg-amber-50 border-2 border-yellow-400 rounded-lg p-6">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Your Signature</label>
+            <canvas id="signatureCanvas" class="bg-white border-2 border-dashed border-yellow-500 rounded-lg cursor-crosshair w-full"></canvas>
+            <button id="clearSignature" class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-all border-2 border-red-700">Clear Signature</button>
+          </div>
+          <div class="flex gap-4 mt-8">
+            <button id="backToDetails" class="flex-1 bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all border-2 border-gray-400">Back</button>
+            <button id="finishBtn" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-black">Finish</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="consent.js"></script>
+  </body>
+</html>
