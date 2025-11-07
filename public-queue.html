@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue Display – LePlay</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .queue-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(234, 179, 8, 0.2);
+            border: 3px solid #eab308;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            color: #a16207;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .header .zone-name {
+            font-size: 2rem;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .zone-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
+            border: 2px solid #fde047;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .zone-selector label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+        
+        .zone-selector select {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #fde047;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .zone-selector button {
+            padding: 0.75rem 2rem;
+            background: #eab308;
+            color: black;
+            border: 2px solid black;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .zone-selector button:hover {
+            background: #fde047;
+            transform: translateY(-2px);
+        }
+        
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+        
+        .auto-refresh input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .queue-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .queue-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(234, 179, 8, 0.2);
+            border: 3px solid #fde047;
+        }
+        
+        .queue-section.waiting {
+            border-color: #f59e0b;
+        }
+        
+        .queue-section.inside {
+            border-color: #10b981;
+        }
+        
+        .queue-section h2 {
+            font-size: 2rem;
+            margin: 0 0 1.5rem 0;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid currentColor;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .queue-section.waiting h2 {
+            color: #f59e0b;
+        }
+        
+        .queue-section.inside h2 {
+            color: #10b981;
+        }
+        
+        .queue-count {
+            background: currentColor;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            margin-left: auto;
+        }
+        
+        .child-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .child-card {
+            background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #fde047;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .child-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(234, 179, 8, 0.3);
+        }
+        
+        .child-number {
+            background: #eab308;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 3px solid black;
+            flex-shrink: 0;
+        }
+        
+        .child-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #9ca3af;
+            font-size: 1.25rem;
+            font-style: italic;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+            font-size: 1.25rem;
+        }
+        
+        .error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #dc2626;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .queue-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header .zone-name {
+                font-size: 1.5rem;
+            }
+            
+            .zone-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .auto-refresh {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="queue-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎢 Queue Display</h1>
+            <div class="zone-name" id="displayZoneName">Select a zone to view queue</div>
+        </div>
+        
+        <!-- Zone Selector -->
+        <div class="zone-selector">
+            <label for="zoneSelect">Select Zone:</label>
+            <select id="zoneSelect">
+                <option value="">-- Choose a Zone --</option>
+                <option value="zone-1">Zone 1 - Construction Area</option>
+                <option value="zone-2">Zone 2 - Engineering Lab</option>
+                <option value="zone-3">Zone 3 - Building Blocks</option>
+                <option value="zone-4">Zone 4 - Mini City</option>
+                <option value="zone-5">Zone 5 - Tool Workshop</option>
+            </select>
+            <button id="loadQueueBtn">Load Queue</button>
+            
+            <div class="auto-refresh">
+                <input type="checkbox" id="autoRefresh" checked />
+                <label for="autoRefresh">Auto-refresh (5s)</label>
+            </div>
+        </div>
+        
+        <!-- Error Message -->
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        
+        <!-- Queue Grid -->
+        <div class="queue-grid">
+            <!-- Waiting Queue -->
+            <div class="queue-section waiting">
+                <h2>
+                    ⏳ Waiting
+                    <span class="queue-count" id="waitingCount">0</span>
+                </h2>
+                <div id="waitingList" class="child-list">
+                    <div class="loading">Select a zone to view queue</div>
+                </div>
+            </div>
+            
+            <!-- Inside Queue -->
+            <div class="queue-section inside">
+                <h2>
+                    ✅ Inside
+                    <span class="queue-count" id="insideCount">0</span>
+                </h2>
+                <div id="insideList" class="child-list">
+                    <div class="loading">Select a zone to view queue</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Last Updated -->
+        <div class="last-updated" id="lastUpdated"></div>
+    </div>
+    
+    <script src="public-queue.js"></script>
+</body>
+</html>

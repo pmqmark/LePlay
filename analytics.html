@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics Dashboard – LePlay</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    
+    <!-- Flatpickr for date range picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    
+    <style>
+        .analytics-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .date-controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
+            border: 2px solid #fde047;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .date-controls label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .date-controls input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #fde047;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 150px;
+        }
+        
+        .date-controls button {
+            padding: 0.75rem 1.5rem;
+            background: #eab308;
+            color: black;
+            border: 2px solid black;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .date-controls button:hover {
+            background: #fde047;
+            transform: translateY(-1px);
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
+            border: 2px solid #fde047;
+        }
+        
+        .metric-card h3 {
+            color: #a16207;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #fde047;
+        }
+        
+        .metric-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .metric-table th {
+            background: #fef9c3;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #fde047;
+        }
+        
+        .metric-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #fef3c7;
+        }
+        
+        .metric-table tr:hover {
+            background: #fef9c3;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        
+        .error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+        .sample-size {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+    <div class="analytics-container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+                FOREVER KID <span class="text-xl md:text-2xl text-gray-600">LLP</span>
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-yellow-600">Analytics Dashboard</h2>
+        </div>
+        
+        <!-- Date Range Controls -->
+        <div class="date-controls">
+            <label for="startDate">Start Date:</label>
+            <input type="text" id="startDate" placeholder="Select start date" readonly />
+            
+            <label for="endDate">End Date:</label>
+            <input type="text" id="endDate" placeholder="Select end date" readonly />
+            
+            <button id="fetchDataBtn">Fetch Data</button>
+        </div>
+        
+        <!-- Error Message -->
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <!-- Component 1: Average Wait Times -->
+            <div class="metric-card">
+                <h3>⏱️ Average Wait Times</h3>
+                <div id="waitTimesContent">
+                    <div class="loading">Select a date range and click "Fetch Data"</div>
+                </div>
+            </div>
+            
+            <!-- Component 2: Missed Rides -->
+            <div class="metric-card">
+                <h3>❌ Missed Rides</h3>
+                <div id="missedRidesContent">
+                    <div class="loading">Select a date range and click "Fetch Data"</div>
+                </div>
+            </div>
+            
+            <!-- Component 3: Average Ride Duration -->
+            <div class="metric-card">
+                <h3>🎢 Average Ride Duration</h3>
+                <div id="rideDurationContent">
+                    <div class="loading">Select a date range and click "Fetch Data"</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="analytics.js"></script>
+</body>
+</html>
