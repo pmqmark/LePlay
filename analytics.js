@@ -9,7 +9,8 @@
  */
 
 // API Base URL - update this to match your backend
-const API_BASE_URL = 'http://localhost:8080/api/v1/metrics';
+const API_BASE_URL = "http://zenon-alb-staging-1894668587.ap-south-1.elb.amazonaws.com/api/v1/metrics";
+
 
 // DOM Elements
 let startDatePicker;
