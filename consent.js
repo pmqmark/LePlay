@@ -354,7 +354,8 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function fetchExistingConsent(mobile) {
   try {
-    const response = await fetch(`http://localhost:8080/api/consent?mobile=${encodeURIComponent(mobile)}`);
+    const response = await fetch(`http://zenon-alb-staging-1894668587.ap-south-1.elb.amazonaws.com/api/consent?mobile=${encodeURIComponent(mobile)}`);
+
     if (!response.ok) return;
 
     const json = await response.json();
@@ -475,7 +476,8 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       finishBtn.disabled = true;
       finishBtn.textContent = 'Submitting…';
-      const response = await fetch('http://localhost:8080/api/consent', {
+      const response = await fetch('http://zenon-alb-staging-1894668587.ap-south-1.elb.amazonaws.com/api/consent', {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
