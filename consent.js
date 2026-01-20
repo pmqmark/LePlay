@@ -196,11 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
     dobLabel.textContent = 'Date of Birth';
 
     // // Hint under/near DOB label
-    const dobHint = document.createElement('div');
-    dobHint.textContent = "Get a free pass on your child's birthday!";
-    dobHint.style.fontSize = '0.85rem';
-    dobHint.style.color = '#6b7280';
-    dobHint.style.margin = '4px 0 6px';
+    // const dobHint = document.createElement('div');
+    //   dobHint.textContent = "Get a free pass on your child's birthday!";
+    // // dobHint.style.fontSize = '0.85rem';
+    // // dobHint.style.color = '#6b7280';
+    // // dobHint.style.margin = '4px 0 6px';
 
     const dobInput = document.createElement('input');
     dobInput.type = 'text';
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     group.appendChild(displayNameLabel);
     group.appendChild(displayNameInput);
     group.appendChild(dobLabel);
-    group.appendChild(dobHint);   // hint sits just below the DOB label
+    //group.appendChild(dobHint);   // hint sits just below the DOB label
     group.appendChild(dobInput);
     group.appendChild(removeBtn);
     childrenContainer.appendChild(group);
